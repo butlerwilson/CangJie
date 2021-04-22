@@ -41,9 +41,10 @@
   "appid": "wx0cce247a27fe4d7e",
   "projectname": "CangJie",
   "miniprogramRoot": "miniprogram/",
-  "cloudbaseRoot": "cloud/",
+  "cloudbaseRoot": "cloudbase/",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {
     "search": {
       "list": []
