@@ -38,9 +38,10 @@
   },
   "compileType": "game",
   "libVersion": "1.9.94",
-  "appid": "wxb3a71277c2c26660",
+  "appid": "wx0cce247a27fe4d7e",
   "projectname": "CangJie",
   "miniprogramRoot": "miniprogram/",
+  "cloudbaseRoot": "cloud/",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
