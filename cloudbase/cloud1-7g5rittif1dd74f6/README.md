@@ -36,7 +36,7 @@ wx.cloud.callFunction({
 
 ### Response
 
-```json
+```javascript
 [
     // 数组大小与请求 size 相同
     {
@@ -79,7 +79,7 @@ wx.cloud.callFunction({
 
 ### Response
 
-```json
+```javascript
 {
     "char_list": [ x1, x2, ...], // 部首的列表
     "ans_list": [
