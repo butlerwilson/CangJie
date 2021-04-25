@@ -7,55 +7,6 @@ import DataBus from './databus'
 
 const ctx = canvas.getContext('2d')
 const databus = new DataBus()
-wx.cloud.init({
-  env:"cloud1-7g5rittif1dd74f6"//你的环境ID
-})
-wx.showToast({
-  title: '成功',
-  icon: 'success',
-  duration: 2000
-})
-//试一下获取后端数据
-wx.cloud.database().collection("chars_with_res").get({
-  success(res) {
-    console.log("数据库API获取数据成功！", res)
-  },
-  fail(res) {
-    console.log("数据库API获取数据失败！", res)
-  }
-})
-
-//试一下云函数
-wx.cloud.callFunction({
-  name:"add",
-  data:{
-    a:5,
-    b:6
-  },
-  
-  success(res){
-    console.log("请求成功！", res)
-  },
-  fail(res){
-    console.log("请求失败！",res)
-  }
-})
-
-// 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
-wx.getSetting({
-  success(res) {
-    if (!res.authSetting['scope.record']) {
-      wx.authorize({
-        scope: 'scope.record',
-        success () {
-          // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-          wx.startRecord()
-        }
-      })
-    }
-  }
-})
-
 
 /**
  * 游戏主函数
