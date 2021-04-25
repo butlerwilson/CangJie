@@ -7,18 +7,22 @@ import DataBus from './databus'
 
 const ctx = canvas.getContext('2d')
 const databus = new DataBus()
+let list
 wx.cloud.init({
   env:"cloud1-7g5rittif1dd74f6"//你的环境ID
 })
-wx.showToast({
-  title: '成功',
-  icon: 'success',
-  duration: 2000
-})
+
 //试一下获取后端数据
 wx.cloud.database().collection("chars_with_res").get({
   success(res) {
-    console.log("数据库API获取数据成功！", res)
+    list = res.data
+    console.log("数据库API获取数据成功！", list[0])
+    console.log("第一个字", list[0].key)
+    wx.showToast({
+      title: '成功',
+      icon: 'success',
+      duration: 2000
+    })
   },
   fail(res) {
     console.log("数据库API获取数据失败！", res)
@@ -32,7 +36,6 @@ wx.cloud.callFunction({
     a:5,
     b:6
   },
-  
   success(res){
     console.log("请求成功！", res)
   },
