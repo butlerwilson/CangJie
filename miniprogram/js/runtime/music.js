@@ -19,7 +19,7 @@ export default class Music {
     this.boomAudio = new Audio()
     this.boomAudio.src = 'audio/boom.mp3'
 
-    this.playBgm()
+    // this.playBgm()
   }
 
   playBgm() {
@@ -28,7 +28,7 @@ export default class Music {
 
   playShoot() {
     this.shootAudio.currentTime = 0
-    this.shootAudio.play()
+    //this.shootAudio.play()
   }
 
   playExplosion() {

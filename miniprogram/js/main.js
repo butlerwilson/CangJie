@@ -7,57 +7,63 @@ import DataBus from './databus'
 
 const ctx = canvas.getContext('2d')
 const databus = new DataBus()
-let list
+let clist
+let alist
+let rlist
+
 wx.cloud.init({
   env:"cloud1-7g5rittif1dd74f6"//你的环境ID
 })
 
-//试一下获取后端数据
-wx.cloud.database().collection("chars_with_res").get({
-  success(res) {
-    list = res.data
-    console.log("数据库API获取数据成功！", list[0])
-    console.log("第一个字", list[0].key)
-    wx.showToast({
-      title: '成功',
-      icon: 'success',
-      duration: 2000
-    })
-  },
-  fail(res) {
-    console.log("数据库API获取数据失败！", res)
-  }
-})
+// //试一下获取后端数据
+// wx.cloud.database().collection("chars_with_res").get({
+//   success(res) {
+//     list = res.data
+//     console.log("数据库API获取数据成功！", list)
+//     console.log("第一个字", list[0].key)
+//     wx.showToast({
+//       title: '成功',
+//       icon: 'success',
+//       duration: 2000
+//     })
+//   },
+//   fail(res) {
+//     console.log("数据库API获取数据失败！", res)
+//   }
+// })
 
 //试一下云函数
 wx.cloud.callFunction({
-  name:"add",
+  name:"charList",
   data:{
-    a:5,
-    b:6
+    size: 1000 // size 表示想要获取的条目个数
   },
   success(res){
-    console.log("请求成功！", res)
+    clist=res.result.char_list
+    alist=res.result.ans_list
+    // console.log("charList sucess!", res)
+    console.log("charList sucess!", clist)
+    console.log("ansList sucess!", alist)
   },
   fail(res){
-    console.log("请求失败！",res)
+    console.log("charList fail!",res)
   }
 })
 
-// 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
-wx.getSetting({
-  success(res) {
-    if (!res.authSetting['scope.record']) {
-      wx.authorize({
-        scope: 'scope.record',
-        success () {
-          // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-          wx.startRecord()
-        }
-      })
-    }
+wx.cloud.callFunction({
+  name:"randomGetter",
+  data:{
+    size: 1000 // size 表示想要获取的条目个数
+  },
+  success(res){
+    rlist=res.result.list
+    console.log("randomGetter sucess!", rlist)
+  },
+  fail(res){fail
+    console.log("randomGetter fail!",res)
   }
 })
+
 
 
 /**
@@ -209,7 +215,7 @@ export default class Main {
 
     if (databus.frame % 20 === 0) {
       this.player.shoot()
-      this.music.playShoot()
+      // this.music.playShoot()
     }
   }
 
