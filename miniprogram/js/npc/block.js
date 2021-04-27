@@ -28,7 +28,7 @@ export default class Block extends Animation {
   }
 
   randomSpeed() {
-    return 6
+    return rnd(1, 3)
   }
 
   init() {
@@ -63,5 +63,28 @@ export default class Block extends Animation {
 
     // 对象回收
     if (this.y > window.innerHeight + this.height) databus.removeBlocks(this)
+  }
+
+
+  // 重载
+  drawToCanvas(ctx) {
+    if (!this.visible) return
+
+    // ctx.drawImage(
+    //   this.img,
+    //   this.x,
+    //   this.y,
+    //   this.width,
+    //   this.height
+    // )
+
+    ctx.font = "30px Arial"
+    ctx.fillText(
+      this.char['char'],
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    )
   }
 }

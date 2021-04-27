@@ -123,7 +123,7 @@ export default class Main {
   blockGenerate() {
     if (databus.frame % 30 === 0) {
       const block = databus.pool.getItemByClass('block', Block)
-      block.init(6)
+      block.init()
       databus.blocks.push(block)
     }
   }

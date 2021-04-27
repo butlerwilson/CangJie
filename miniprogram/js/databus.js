@@ -7,6 +7,7 @@ const __ = {
   ansList: Symbol('ansList')
 }
 
+
 /**
  * 全局状态管理器
  */
@@ -82,6 +83,7 @@ export default class DataBus {
   }
 
   removeBlocks(block) {
+    this.blocks.sort((x, y) => {return y.y - x.y})
     const temp = this.blocks.shift()
 
     temp.visible = false
