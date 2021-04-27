@@ -20,14 +20,18 @@ def filter(in_file):
 
 def json_formatter(lines):
     json_list = []
+    key_set = set()
     for idx, line in enumerate(lines):
         kv = line.split("\t")
         key = kv[0]
+        if key in key_set:
+            continue
+        key_set.add(key)
         values = kv[1::]
         json_list.append({
             "_id": idx,
             "key": key,
-            "value": [v.split(" ") for v in values]
+            "value": [sorted(v.split(" ")) for v in values]
         })
     return json_list
 
