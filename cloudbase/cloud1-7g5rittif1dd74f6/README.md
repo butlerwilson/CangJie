@@ -12,6 +12,11 @@
     - [使用权限](#使用权限-1)
     - [Request](#request-1)
     - [Response](#response-1)
+  - [validate](#validate)
+    - [状态](#状态-2)
+    - [使用权限](#使用权限-2)
+    - [Request](#request-2)
+    - [Response](#response-2)
 
 ## randomGetter
 
@@ -60,7 +65,7 @@ wx.cloud.callFunction({
 
 ### 状态
 
-- 已完成但未部署，只能本地调试
+- 已部署
 
 ### 使用权限
 
@@ -106,4 +111,36 @@ wx.cloud.callFunction({
         }
     ]
 }
+```
+
+
+## validate
+
+### 状态
+
+- 已完成，但未部署
+
+### 使用权限
+
+- 仅创建者可读写
+
+### Request
+```javascript
+wx.cloud.callFunction({
+    name: "validate",
+    data: {
+        char_list: [x1, x2, ...] // 多个部首所组成的数组
+    }
+})
+```
+
+### Response
+```javascript
+[
+    {
+        "_id": xxx, // 在数据库中的 id，唯一标识符
+        "key": X, // 该条目对应的文字
+        "value": [[x1, x2, ...], ...,[...]] // 一个二维数组，二维数组中的每个数组都表示一个可行的拆字方案
+    }
+]
 ```
