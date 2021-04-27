@@ -2,6 +2,11 @@ import Pool from './base/pool'
 
 let instance
 
+const __ = {
+  charList: Symbol('charList'),
+  ansList: Symbol('ansList')
+}
+
 /**
  * 全局状态管理器
  */
@@ -16,13 +21,40 @@ export default class DataBus {
     this.reset()
   }
 
-  reset() {
+  async reset() {
+    await this.refreshList()
     this.frame = 0
     this.score = 0
     this.bullets = []
+    this.blocks = []
     this.enemys = []
     this.animations = []
     this.gameOver = false
+  }
+
+  async refreshList() {
+    let _this = this
+    let res = await wx.cloud.callFunction({
+      name: "charList",
+      data: {
+        size: 100
+      }
+    })
+    let clist=res.result.char_list
+    let alist=res.result.ans_list
+    _this[__.charList] = clist
+    _this[__.ansList] = alist
+    // console.log("charList sucess!", res)
+    console.log("charList sucess!", clist)
+    console.log("ansList sucess!", alist)
+  }
+
+  getCharList() {
+    return this[__.charList]
+  }
+
+  getAnsList() {
+    return this[__.ansList]
   }
 
   /**
@@ -47,5 +79,13 @@ export default class DataBus {
     temp.visible = false
 
     this.pool.recover('bullet', bullet)
+  }
+
+  removeBlocks(block) {
+    const temp = this.blocks.shift()
+
+    temp.visible = false
+
+    this.pool.recover('block', block)
   }
 }
