@@ -81,7 +81,18 @@ wx.cloud.callFunction({
 
 ```javascript
 {
-    "char_list": [ x1, x2, ...], // 部首的列表
+    "char_list": [ 
+        // 部首的列表
+        {
+            "char": x1, // 部首
+            "ans_index": idx1 // 该部首对应的答案在 ans_list 中的坐标
+        },
+        ...
+        {
+            "char": xn,
+            "ans_index": idxn
+        }
+    ],
     "ans_list": [
         // 数组大小与请求 size 有关
         {
