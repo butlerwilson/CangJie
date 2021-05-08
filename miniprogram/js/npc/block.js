@@ -2,8 +2,8 @@ import Animation from '../base/animation'
 import DataBus from '../databus'
 
 const BLOCK_IMG_SRC = 'images/111.png'
-const BLOCK_WIDTH = 60
-const BLOCK_HEIGHT = 60
+const BLOCK_WIDTH = 30
+const BLOCK_HEIGHT = 10
 
 module.exports.BLOCK_WIDTH = BLOCK_WIDTH;
 module.exports.BLOCK_HEIGHT = BLOCK_HEIGHT;

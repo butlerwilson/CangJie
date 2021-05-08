@@ -24,9 +24,20 @@ export default class Player extends Sprite {
     this.touched = false
 
     this.bullets = []
+    this.line = [[0, 0], [0, 0]];
 
     // 初始化事件监听
     this.initEvent()
+  }
+
+  addDot(x, y) {
+    const end = this.line.pop();
+    this.line.push([x, y]);
+    this.line.push(end);
+  }
+
+  end() {
+    return this.line[this.line.length - 1];
   }
 
   /**
@@ -74,11 +85,11 @@ export default class Player extends Sprite {
     canvas.addEventListener('touchstart', ((e) => {
       e.preventDefault()
 
+      const x = e.touches[0].clientX
+      const y = e.touches[0].clientY
+
       // 记录触摸点坐标
-      this.startX=e.touches[0].clientX
-      this.startY=e.touches[0].clientY
-      this.endX=this.startX
-      this.endY=this.startY
+      this.line = [[x, y], [x, y]];
 
       this.touched = true
 
@@ -89,20 +100,17 @@ export default class Player extends Sprite {
 
       const x = e.touches[0].clientX
       const y = e.touches[0].clientY
+      const l = this.line.length;
 
-      this.endX=e.touches[0].clientX
-      this.endY=e.touches[0].clientY  
+      this.line[l - 1][0] = x;
+      this.line[l - 1][1] = y;
 
-      if (this.touched) this.setAirPosAcrossFingerPosZ(x, y)
+      // if (this.touched) this.setAirPosAcrossFingerPosZ(x, y)
     }))
 
     canvas.addEventListener('touchend', ((e) => {
       e.preventDefault()
-      this.endX = 0;
-      this.endY = 0;
-      this.startX = 0;
-      this.startY = 0;
-      console.log("end"+this.endX+','+this.endY)
+      this.line = [[0, 0], [0, 0]]
       this.touched = false
     }))
   }
@@ -124,8 +132,12 @@ export default class Player extends Sprite {
   }
   drawToCanvas(ctx) {
     ctx.beginPath();
-    ctx.moveTo(this.startX,this.startY);
-    ctx.lineTo(this.endX,this.endY);
+    for (var i = 0; i < this.line.length - 1; ++i) {
+      const startX = this.line[i][0], startY = this.line[i][1];
+      const endX = this.line[i + 1][0], endY = this.line[i + 1][1];
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(endX, endY);
+    }
     ctx.stroke();
     // console.log(this.startX+','+this.startY+','+this.endX+','+this.endY)
   }

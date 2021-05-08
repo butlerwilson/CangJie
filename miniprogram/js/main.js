@@ -151,11 +151,15 @@ export default class Main {
      // console.log("hi")
       if (!that.player.touched) return;
      // console.log(block.x + BLOCK_WIDTH >= that.player.endX);
-      if (!!(block.x + BLOCK_WIDTH >= that.player.endX && 
-          block.y + BLOCK_HEIGHT >= that.player.endY &&
-          that.player.endX >= block.x &&
-          that.player.endY >= block.y)) {
+      const endX = that.player.end()[0], endY = that.player.end()[1];
+      if (!!(block.x + BLOCK_WIDTH >= endX && 
+          block.y + BLOCK_HEIGHT >= endY &&
+          endX >= block.x &&
+          endY >= block.y)) {
             block.movable = false;
+            const centerX = block.x + BLOCK_WIDTH / 2;
+            const centerY = block.y + BLOCK_HEIGHT / 2;
+            that.player.addDot(centerX, centerY)
           }
     })
 
