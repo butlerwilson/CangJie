@@ -74,20 +74,12 @@ export default class Player extends Sprite {
     canvas.addEventListener('touchstart', ((e) => {
       e.preventDefault()
 
-      const x = e.touches[0].clientX
-      const y = e.touches[0].clientY
-
       // 记录触摸点坐标
       this.startX=e.touches[0].clientX
       this.startY=e.touches[0].clientY
       this.endX=this.startX
       this.endY=this.startY
-      //
-      if (this.checkIsFingerOnAir(x, y)) {
-        this.touched = true
 
-        this.setAirPosAcrossFingerPosZ(x, y)
-      }
     }))
 
     canvas.addEventListener('touchmove', ((e) => {
@@ -132,6 +124,6 @@ export default class Player extends Sprite {
     ctx.moveTo(this.startX,this.startY);
     ctx.lineTo(this.endX,this.endY);
     ctx.stroke();
-    console.log(this.startX+','+this.startY+','+this.endX+','+this.endY)
+    // console.log(this.startX+','+this.startY+','+this.endX+','+this.endY)
   }
 }

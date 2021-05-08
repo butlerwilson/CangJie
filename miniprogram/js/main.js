@@ -5,6 +5,7 @@ import GameInfo from './runtime/gameinfo'
 import Music from './runtime/music'
 import DataBus from './databus'
 import Block from './npc/block'
+import {BLOCK_WIDTH, BLOCK_HEIGHT} from './npc/block'
 
 wx.cloud.init({
   env:"cloud1-7g5rittif1dd74f6"//你的环境ID
@@ -144,31 +145,43 @@ export default class Main {
   collisionDetection() {
     const that = this
 
-    databus.bullets.forEach((bullet) => {
-      for (let i = 0, il = databus.enemys.length; i < il; i++) {
-        const enemy = databus.enemys[i]
-
-        if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
-          enemy.playAnimation()
-          that.music.playExplosion()
-
-          bullet.visible = false
-          databus.score += 1
-
-          break
-        }
-      }
+    databus.blocks.forEach((block) => {
+      // console.log("x: ", block.x, "y: ", block.y)
+      console.log("x: ", that.player.endX, "y: ", that.player.endY)
+      if (!that.player.touched) return;
+      if (!!(block.x + BLOCK_WIDTH >= that.player.endX && 
+          block.y + BLOCK_HEIGHT >= that.player.endY &&
+          that.player.endX >= block.x &&
+          that.player.endY >= block.y)) {
+            block.movable = false;
+          }
     })
 
-    for (let i = 0, il = databus.enemys.length; i < il; i++) {
-      const enemy = databus.enemys[i]
+    // databus.bullets.forEach((bullet) => {
+    //   for (let i = 0, il = databus.enemys.length; i < il; i++) {
+    //     const enemy = databus.enemys[i]
 
-      if (this.player.isCollideWith(enemy)) {
-        databus.gameOver = true
+    //     if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
+    //       enemy.playAnimation()
+    //       that.music.playExplosion()
 
-        break
-      }
-    }
+    //       bullet.visible = false
+    //       databus.score += 1
+
+    //       break
+    //     }
+    //   }
+    // })
+
+    // for (let i = 0, il = databus.enemys.length; i < il; i++) {
+    //   const enemy = databus.enemys[i]
+
+    //   if (this.player.isCollideWith(enemy)) {
+    //     databus.gameOver = true
+
+    //     break
+    //   }
+    // }
   }
 
   // 游戏结束后的触摸事件处理逻辑
@@ -247,7 +260,7 @@ export default class Main {
 
     // this.enemyGenerate()
 
-    // this.collisionDetection()
+    this.collisionDetection()
 
     if (databus.frame % 20 === 0) {
       this.player.shoot()
