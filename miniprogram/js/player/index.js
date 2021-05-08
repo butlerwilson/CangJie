@@ -77,6 +77,11 @@ export default class Player extends Sprite {
       const x = e.touches[0].clientX
       const y = e.touches[0].clientY
 
+      // 记录触摸点坐标
+      this.startX=e.touches[0].clientX
+      this.startY=e.touches[0].clientY
+      this.endX=this.startX
+      this.endY=this.startY
       //
       if (this.checkIsFingerOnAir(x, y)) {
         this.touched = true
@@ -91,12 +96,18 @@ export default class Player extends Sprite {
       const x = e.touches[0].clientX
       const y = e.touches[0].clientY
 
+      this.endX=e.touches[0].clientX
+      this.endY=e.touches[0].clientY  
+
       if (this.touched) this.setAirPosAcrossFingerPosZ(x, y)
     }))
 
     canvas.addEventListener('touchend', ((e) => {
       e.preventDefault()
-
+      this.ednX = 0;
+      this.endY = 0;
+      this.startX = 0;
+      this.startY = 0;
       this.touched = false
     }))
   }
@@ -115,5 +126,12 @@ export default class Player extends Sprite {
     )
 
     databus.bullets.push(bullet)
+  }
+  drawToCanvas(ctx) {
+    ctx.beginPath();
+    ctx.moveTo(this.startX,this.startY);
+    ctx.lineTo(this.endX,this.endY);
+    ctx.stroke();
+    console.log(this.startX+','+this.startY+','+this.endX+','+this.endY)
   }
 }

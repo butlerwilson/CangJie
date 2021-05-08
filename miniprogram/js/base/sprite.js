@@ -12,6 +12,12 @@ export default class Sprite {
     this.x = x
     this.y = y
 
+    // 划线记录位置
+    this.startX = 0
+    this.startY = 0
+    this.endX = 0
+    this.endY = 0
+
     this.visible = true
   }
 
