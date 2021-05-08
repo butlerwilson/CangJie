@@ -122,7 +122,7 @@ export default class Main {
   }
 
   blockGenerate() {
-    if (databus.frame % 30 === 0) {
+    if (databus.frame % 60 === 0) {
       const block = databus.pool.getItemByClass('block', Block)
       block.init()
       databus.blocks.push(block)
