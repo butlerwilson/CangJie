@@ -147,8 +147,10 @@ export default class Main {
 
     databus.blocks.forEach((block) => {
       // console.log("x: ", block.x, "y: ", block.y)
-      console.log("x: ", that.player.endX, "y: ", that.player.endY)
+      // console.log("x: ", that.player.endX, "y: ", that.player.endY)
+     // console.log("hi")
       if (!that.player.touched) return;
+     // console.log(block.x + BLOCK_WIDTH >= that.player.endX);
       if (!!(block.x + BLOCK_WIDTH >= that.player.endX && 
           block.y + BLOCK_HEIGHT >= that.player.endY &&
           that.player.endX >= block.x &&

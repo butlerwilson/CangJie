@@ -80,6 +80,8 @@ export default class Player extends Sprite {
       this.endX=this.startX
       this.endY=this.startY
 
+      this.touched = true
+
     }))
 
     canvas.addEventListener('touchmove', ((e) => {
@@ -96,10 +98,11 @@ export default class Player extends Sprite {
 
     canvas.addEventListener('touchend', ((e) => {
       e.preventDefault()
-      this.ednX = 0;
+      this.endX = 0;
       this.endY = 0;
       this.startX = 0;
       this.startY = 0;
+      console.log("end"+this.endX+','+this.endY)
       this.touched = false
     }))
   }

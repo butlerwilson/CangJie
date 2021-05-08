@@ -5,6 +5,9 @@ const BLOCK_IMG_SRC = 'images/111.png'
 const BLOCK_WIDTH = 60
 const BLOCK_HEIGHT = 60
 
+module.exports.BLOCK_WIDTH = BLOCK_WIDTH;
+module.exports.BLOCK_HEIGHT = BLOCK_HEIGHT;
+
 let char_list_idx = 0
 let char_list, ans_list
 let refreshed
