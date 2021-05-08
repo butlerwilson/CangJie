@@ -4,16 +4,14 @@ import BackGround from './runtime/background'
 import GameInfo from './runtime/gameinfo'
 import Music from './runtime/music'
 import DataBus from './databus'
-
-const ctx = canvas.getContext('2d')
-const databus = new DataBus()
-let clist
-let alist
-let rlist
+import Block from './npc/block'
 
 wx.cloud.init({
   env:"cloud1-7g5rittif1dd74f6"//你的环境ID
 })
+
+const ctx = canvas.getContext('2d')
+const databus = new DataBus()
 
 // //试一下获取后端数据
 // wx.cloud.database().collection("chars_with_res").get({
@@ -33,36 +31,36 @@ wx.cloud.init({
 // })
 
 //试一下云函数
-wx.cloud.callFunction({
-  name:"charList",
-  data:{
-    size: 1000 // size 表示想要获取的条目个数
-  },
-  success(res){
-    clist=res.result.char_list
-    alist=res.result.ans_list
-    // console.log("charList sucess!", res)
-    console.log("charList sucess!", clist)
-    console.log("ansList sucess!", alist)
-  },
-  fail(res){
-    console.log("charList fail!",res)
-  }
-})
+// wx.cloud.callFunction({
+//   name:"charList",
+//   data:{
+//     size: 1000 // size 表示想要获取的条目个数
+//   },
+//   success(res){
+//     clist=res.result.char_list
+//     alist=res.result.ans_list
+//     // console.log("charList sucess!", res)
+//     console.log("charList sucess!", clist)
+//     console.log("ansList sucess!", alist)
+//   },
+//   fail(res){
+//     console.log("charList fail!",res)
+//   }
+// })
 
-wx.cloud.callFunction({
-  name:"randomGetter",
-  data:{
-    size: 1000 // size 表示想要获取的条目个数
-  },
-  success(res){
-    rlist=res.result.list
-    console.log("randomGetter sucess!", rlist)
-  },
-  fail(res){fail
-    console.log("randomGetter fail!",res)
-  }
-})
+// wx.cloud.callFunction({
+//   name:"randomGetter",
+//   data:{
+//     size: 1000 // size 表示想要获取的条目个数
+//   },
+//   success(res){
+//     rlist=res.result.list
+//     console.log("randomGetter sucess!", rlist)
+//   },
+//   fail(res){fail
+//     console.log("randomGetter fail!",res)
+//   }
+// })
 
 
 
@@ -73,33 +71,61 @@ export default class Main {
   constructor() {
     // 维护当前requestAnimationFrame的id
     this.aniId = 0
-
     this.restart()
   }
 
   restart() {
-    databus.reset()
+    databus.reset().then(res => {
+      canvas.removeEventListener(
+        'touchstart',
+        this.touchHandler
+      )
+  
+      this.bg = new BackGround(ctx)
+      this.player = new Player(ctx)
+      this.gameinfo = new GameInfo()
+      this.music = new Music()
+  
+      this.bindLoop = this.loop.bind(this)
+      this.hasEventBind = false
+  
+      // 清除上一局的动画
+      window.cancelAnimationFrame(this.aniId)
+  
+      this.aniId = window.requestAnimationFrame(
+        this.bindLoop,
+        canvas
+      )
+    })
 
-    canvas.removeEventListener(
-      'touchstart',
-      this.touchHandler
-    )
+    // canvas.removeEventListener(
+    //   'touchstart',
+    //   this.touchHandler
+    // )
 
-    this.bg = new BackGround(ctx)
-    this.player = new Player(ctx)
-    this.gameinfo = new GameInfo()
-    this.music = new Music()
+    // this.bg = new BackGround(ctx)
+    // this.player = new Player(ctx)
+    // this.gameinfo = new GameInfo()
+    // this.music = new Music()
 
-    this.bindLoop = this.loop.bind(this)
-    this.hasEventBind = false
+    // this.bindLoop = this.loop.bind(this)
+    // this.hasEventBind = false
 
-    // 清除上一局的动画
-    window.cancelAnimationFrame(this.aniId)
+    // // 清除上一局的动画
+    // window.cancelAnimationFrame(this.aniId)
 
-    this.aniId = window.requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
+    // this.aniId = window.requestAnimationFrame(
+    //   this.bindLoop,
+    //   canvas
+    // )
+  }
+
+  blockGenerate() {
+    if (databus.frame % 30 === 0) {
+      const block = databus.pool.getItemByClass('block', Block)
+      block.init()
+      databus.blocks.push(block)
+    }
   }
 
   /**
@@ -169,13 +195,17 @@ export default class Main {
 
     this.bg.render(ctx)
 
-    databus.bullets
-      .concat(databus.enemys)
-      .forEach((item) => {
-        item.drawToCanvas(ctx)
-      })
+    // databus.bullets
+    //   .concat(databus.enemys)
+    //   .forEach((item) => {
+    //     item.drawToCanvas(ctx)
+    //   })
 
-    this.player.drawToCanvas(ctx)
+    databus.blocks.forEach((item) => {
+          item.drawToCanvas(ctx)
+        })
+
+    // this.player.drawToCanvas(ctx)
 
     databus.animations.forEach((ani) => {
       if (ani.isPlaying) {
@@ -183,7 +213,7 @@ export default class Main {
       }
     })
 
-    this.gameinfo.renderGameScore(ctx, databus.score)
+    // this.gameinfo.renderGameScore(ctx, databus.score)
 
     // 游戏结束停止帧循环
     if (databus.gameOver) {
@@ -203,13 +233,19 @@ export default class Main {
 
     this.bg.update()
 
-    databus.bullets
-      .concat(databus.enemys)
-      .forEach((item) => {
-        item.update()
-      })
+    // databus.bullets
+    //   .concat(databus.enemys)
+    //   .forEach((item) => {
+    //     item.update()
+    //   })
 
-    this.enemyGenerate()
+    databus.blocks.forEach((item) => {
+      item.update()
+    })
+
+    this.blockGenerate()
+
+    // this.enemyGenerate()
 
     // this.collisionDetection()
 
