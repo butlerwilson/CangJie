@@ -90,4 +90,18 @@ export default class DataBus {
 
     this.pool.recover('block', block)
   }
+
+  removeUnmoveBlock() {
+    for (var i = 0; i < this.blocks.length; ) {
+      if (!this.blocks[i].movable) {
+        this.blocks[i].visible = false;
+        this.pool.recover('block', this.blocks[i]);
+        this.blocks.splice(i, 1);
+      } else {
+        ++i;
+      }
+    }
+  }
+
+
 }

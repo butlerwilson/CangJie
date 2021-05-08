@@ -9,7 +9,8 @@ module.exports.BLOCK_WIDTH = BLOCK_WIDTH;
 module.exports.BLOCK_HEIGHT = BLOCK_HEIGHT;
 
 let char_list_idx = 0
-let char_list, ans_list
+let char_list
+let ans_list
 let refreshed
 
 const __ = {
@@ -68,6 +69,40 @@ export default class Block extends Animation {
     if (this.y > window.innerHeight + this.height) databus.removeBlocks(this)
   }
 
+  static async judgeBlocks(blocks) {
+    let id = null;
+    let cloud = false;
+    for (var i = 0; i < blocks.length; ++i) {
+      if (id === null) id = blocks[i].char['ans_index'];
+      if (blocks[i].char['ans_index'] != id) {
+        cloud = true;
+        break;
+      }
+    }
+    if (!cloud) {
+      if (ans_list[id]['ans'].length == blocks.length) {
+        return ans_list[id]['char'];
+      }
+    }
+    var c_list = [];
+    blocks.forEach((block) => {
+      c_list.push(block.char['char'])
+    })
+    console.log(c_list);
+    var res = await wx.cloud.callFunction({
+      name: "validate",
+      data: {
+          char_list: c_list // 多个部首所组成的数组
+      }
+    });
+    console.log(res);
+    if (!res) return null;
+    var result = [];
+    res.result.data.forEach(r => {
+      result.push(r.key);
+    })
+    return result;
+  }
 
   // 重载
   drawToCanvas(ctx) {

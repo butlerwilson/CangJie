@@ -155,11 +155,12 @@ export default class Main {
       if (!!(block.x + BLOCK_WIDTH >= endX && 
           block.y + BLOCK_HEIGHT >= endY &&
           endX >= block.x &&
-          endY >= block.y)) {
+          endY >= block.y) && block.movable) {
             block.movable = false;
             const centerX = block.x + BLOCK_WIDTH / 2;
             const centerY = block.y + BLOCK_HEIGHT / 2;
-            that.player.addDot(centerX, centerY)
+            that.player.addDot(centerX, centerY);
+            that.player.collide_blocks.push(block);
           }
     })
 

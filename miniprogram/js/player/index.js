@@ -1,6 +1,7 @@
 import Sprite from '../base/sprite'
 import Bullet from './bullet'
 import DataBus from '../databus'
+import Block from '../npc/block'
 
 const screenWidth = window.innerWidth
 const screenHeight = window.innerHeight
@@ -24,6 +25,7 @@ export default class Player extends Sprite {
     this.touched = false
 
     this.bullets = []
+    this.collide_blocks = [];
     this.line = [[0, 0], [0, 0]];
 
     // 初始化事件监听
@@ -90,6 +92,7 @@ export default class Player extends Sprite {
 
       // 记录触摸点坐标
       this.line = [[x, y], [x, y]];
+      this.collide_blocks = [];
 
       this.touched = true
 
@@ -110,6 +113,10 @@ export default class Player extends Sprite {
 
     canvas.addEventListener('touchend', ((e) => {
       e.preventDefault()
+      var ans = Block.judgeBlocks(this.collide_blocks).then(res => {
+      console.log(res);
+      });
+      databus.removeUnmoveBlock();
       this.line = [[0, 0], [0, 0]]
       this.touched = false
     }))

@@ -6,19 +6,6 @@ cloud.init({
 })
 const db = cloud.database()
 
-function has(value) {
-  return function in_has(v) {
-    res = false
-    v.forEach((src) => {
-      if (res) return
-      for (var c in value) {
-        if (!(c in src)) return;
-      }
-      res = true
-    })
-    return res
-  }
-}
 const _ = db.command
 // 云函数入口函数
 exports.main = async (event, context) => {
