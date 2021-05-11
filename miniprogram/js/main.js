@@ -7,6 +7,7 @@ import Music from './runtime/music'
 import DataBus from './databus'
 import Block from './npc/block'
 import {BLOCK_WIDTH, BLOCK_HEIGHT} from './npc/block'
+import { listeners } from './libs/listener'
 
 wx.cloud.init({
   env:"cloud1-7g5rittif1dd74f6"//你的环境ID
@@ -14,97 +15,8 @@ wx.cloud.init({
 
 const ctx = canvas.getContext('2d')
 const databus = new DataBus()
-
-// //试一下获取后端数据
-// wx.cloud.database().collection("chars_with_res").get({
-//   success(res) {
-//     list = res.data
-//     console.log("数据库API获取数据成功！", list)
-//     console.log("第一个字", list[0].key)
-//     wx.showToast({
-//       title: '成功',
-//       icon: 'success',
-//       duration: 2000
-//     })
-//   },
-//   fail(res) {
-//     console.log("数据库API获取数据失败！", res)
-//   }
-// })
-
-//试一下云函数
-// wx.cloud.callFunction({
-//   name:"charList",
-//   data:{
-//     size: 1000 // size 表示想要获取的条目个数
-//   },
-//   success(res){
-//     clist=res.result.char_list
-//     alist=res.result.ans_list
-//     // console.log("charList sucess!", res)
-//     console.log("charList sucess!", clist)
-//     console.log("ansList sucess!", alist)
-//   },
-//   fail(res){
-//     console.log("charList fail!",res)
-//   }
-// })
-
-// wx.cloud.callFunction({
-//   name:"randomGetter",
-//   data:{
-//     size: 1000 // size 表示想要获取的条目个数
-//   },
-//   success(res){
-//     rlist=res.result.list
-//     console.log("randomGetter sucess!", rlist)
-//   },
-//   fail(res){fail
-//     console.log("randomGetter fail!",res)
-//   }
-// })
-
-// wx.cloud.callFunction({
-//   name:'getopenid',
-//   complete: res => {
-//     const openid = res.result.openid
-//     wx.cloud.database.colletion('user').where({
-//       _openid: openid
-//     })
-//   }
-// });
-//   success (res) {
-//     if (res.code) {
-//       //发起网络请求
-//       wx.request({
-//         url: 'https://example.com/onLogin',
-//         data: {
-//           code: res.code
-//         }
-//       })
-//     } else {
-//       console.log('登录失败！' + res.errMsg)
-//     }
-//   }
-// })
-
-// // wx.login({
-//   success (res) {
-//     console.log(res);
-//     // if (res.code) {
-//     //   //发起网络请求
-//     //   wx.request({
-//     //     url: 'https://example.com/onLogin',
-//     //     data: {
-//     //       code: res.code
-//     //     }
-//     //   })
-//     // } else {
-//     //   console.log('登录失败！' + res.errMsg)
-//     // }
-//   }
-// });
-
+// ctx.fillStyle = "white";
+// ctx.fillRect(0,0,100,100);
 
 
 /**
@@ -113,6 +25,10 @@ const databus = new DataBus()
 export default class Main {
   constructor() {
     // 维护当前requestAnimationFrame的id
+    canvas.removeEventListener(
+      'touchstart',
+      listeners.startMainGame
+    )
     this.aniId = 0
     this.restart()
   }
@@ -165,6 +81,7 @@ export default class Main {
   }
 
   blockGenerate() {
+    console.log(databus.frame)
     if (databus.frame % 60 === 0) {
       const block = databus.pool.getItemByClass('block', Block)
       block.init()
