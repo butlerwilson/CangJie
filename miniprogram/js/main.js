@@ -81,7 +81,6 @@ export default class Main {
   }
 
   blockGenerate() {
-    console.log(databus.frame)
     if (databus.frame % 60 === 0) {
       const block = databus.pool.getItemByClass('block', Block)
       block.init()

@@ -19,7 +19,8 @@ function ansListAppend(ans_list, char_list, ans, char) {
   }
   ans_list.push({
     "ans": ans,
-    "char": char
+    "char": char.key,
+    "_id": char._id
   })
 }
 
@@ -52,7 +53,7 @@ exports.main = async (event, context) => {
     }
     if (ptr1 == char_list1.length) {
       // 如果是第一个先全部填入呈现的列表中，则将第二个字设置为第一个
-      ansListAppend(ans_list, char_list, ans1, chars[idx].key)
+      ansListAppend(ans_list, char_list, ans1, chars[idx])
       ans1 = ans2
       ans2 = []
       ptr1 = ptr2
@@ -61,8 +62,8 @@ exports.main = async (event, context) => {
     } else {
       // 如果是第二个先，则直接将第一个字剩下的所有部首填入呈现的列表
       while (ptr1 < char_list1.length) charListAppend(ans1, char_list, char_list1[ptr1++])
-      ansListAppend(ans_list, char_list, ans2, chars[idx + 1].key)
-      ansListAppend(ans_list, char_list, ans1, chars[idx].key)
+      ansListAppend(ans_list, char_list, ans2, chars[idx + 1])
+      ansListAppend(ans_list, char_list, ans1, chars[idx])
       ans1 = [], ans2 = []
       ptr1 = 0, ptr2 = 0
       idx += 2

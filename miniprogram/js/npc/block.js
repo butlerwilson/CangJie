@@ -81,7 +81,10 @@ export default class Block extends Animation {
     }
     if (!cloud) {
       if (ans_list[id]['ans'].length == blocks.length) {
-        return [ans_list[id]['char']];
+        return [{
+          _id: ans_list[id]['_id'],
+          key: ans_list[id]['char']
+        }];
       }
     }
     var c_list = [];
@@ -99,7 +102,10 @@ export default class Block extends Animation {
     if (!res) return [];
     var result = [];
     res.result.data.forEach(r => {
-      result.push(r.key);
+      result.push({
+        _id: r._id,
+        key: r.key
+      });
     })
     return result;
   }
