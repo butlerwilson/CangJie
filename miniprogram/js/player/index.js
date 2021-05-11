@@ -115,7 +115,11 @@ export default class Player extends Sprite {
       e.preventDefault()
       var ans = Block.judgeBlocks(this.collide_blocks).then(res => {
         console.log(res);
-        if (res.length) databus.removeUnmoveBlock();
+        if (res.length){
+          databus.removeUnmoveBlock();
+          databus.score+=5;
+          databus.gameOver=true;
+        } 
         else {
           for (var i = 0; i < this.collide_blocks.length; ++i) {
             this.collide_blocks[i].movable = true;

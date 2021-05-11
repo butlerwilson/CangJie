@@ -2,6 +2,7 @@ import Player from './player/index'
 import Enemy from './npc/enemy'
 import BackGround from './runtime/background'
 import GameInfo from './runtime/gameinfo'
+import GameEnd from './runtime/gameend'
 import Music from './runtime/music'
 import DataBus from './databus'
 import Block from './npc/block'
@@ -63,6 +64,47 @@ const databus = new DataBus()
 //   }
 // })
 
+// wx.cloud.callFunction({
+//   name:'getopenid',
+//   complete: res => {
+//     const openid = res.result.openid
+//     wx.cloud.database.colletion('user').where({
+//       _openid: openid
+//     })
+//   }
+// });
+//   success (res) {
+//     if (res.code) {
+//       //发起网络请求
+//       wx.request({
+//         url: 'https://example.com/onLogin',
+//         data: {
+//           code: res.code
+//         }
+//       })
+//     } else {
+//       console.log('登录失败！' + res.errMsg)
+//     }
+//   }
+// })
+
+// // wx.login({
+//   success (res) {
+//     console.log(res);
+//     // if (res.code) {
+//     //   //发起网络请求
+//     //   wx.request({
+//     //     url: 'https://example.com/onLogin',
+//     //     data: {
+//     //       code: res.code
+//     //     }
+//     //   })
+//     // } else {
+//     //   console.log('登录失败！' + res.errMsg)
+//     // }
+//   }
+// });
+
 
 
 /**
@@ -85,6 +127,7 @@ export default class Main {
       this.bg = new BackGround(ctx)
       this.player = new Player(ctx)
       this.gameinfo = new GameInfo()
+      this.gameend = new GameEnd()
       this.music = new Music()
   
       this.bindLoop = this.loop.bind(this)
@@ -234,6 +277,7 @@ export default class Main {
     })
 
     this.gameinfo.renderGameScore(ctx, databus.score)
+    this.gameend.renderGameEnd(ctx)
 
     // 游戏结束停止帧循环
     if (databus.gameOver) {
