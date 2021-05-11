@@ -114,9 +114,14 @@ export default class Player extends Sprite {
     canvas.addEventListener('touchend', ((e) => {
       e.preventDefault()
       var ans = Block.judgeBlocks(this.collide_blocks).then(res => {
-      console.log(res);
+        console.log(res);
+        if (res.length) databus.removeUnmoveBlock();
+        else {
+          for (var i = 0; i < this.collide_blocks.length; ++i) {
+            this.collide_blocks[i].movable = true;
+          }
+        }
       });
-      databus.removeUnmoveBlock();
       this.line = [[0, 0], [0, 0]]
       this.touched = false
     }))
