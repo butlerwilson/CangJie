@@ -18,12 +18,14 @@ const databus = new DataBus()
 // ctx.fillStyle = "white";
 // ctx.fillRect(0,0,100,100);
 
+var curr_main = null;
 
 /**
  * 游戏主函数
  */
 export default class Main {
   constructor() {
+    curr_main = this;
     // 维护当前requestAnimationFrame的id
     canvas.removeEventListener(
       'touchstart',
@@ -31,6 +33,14 @@ export default class Main {
     )
     this.aniId = 0
     this.restart()
+  }
+
+  static stop() {
+    canvas.removeEventListener(
+      'touchstart',
+      curr_main.touchHandler
+    )
+    window.cancelAnimationFrame(curr_main.aniId)
   }
 
   restart() {
@@ -57,31 +67,9 @@ export default class Main {
         canvas
       )
     })
-
-    // canvas.removeEventListener(
-    //   'touchstart',
-    //   this.touchHandler
-    // )
-
-    // this.bg = new BackGround(ctx)
-    // this.player = new Player(ctx)
-    // this.gameinfo = new GameInfo()
-    // this.music = new Music()
-
-    // this.bindLoop = this.loop.bind(this)
-    // this.hasEventBind = false
-
-    // // 清除上一局的动画
-    // window.cancelAnimationFrame(this.aniId)
-
-    // this.aniId = window.requestAnimationFrame(
-    //   this.bindLoop,
-    //   canvas
-    // )
   }
 
   blockGenerate() {
-    console.log(databus.frame)
     if (databus.frame % 60 === 0) {
       const block = databus.pool.getItemByClass('block', Block)
       block.init()
