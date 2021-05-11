@@ -17,6 +17,11 @@
     - [使用权限](#使用权限-2)
     - [Request](#request-2)
     - [Response](#response-2)
+  - [getDecryptedData](#getdecrypteddata)
+    - [状态](#状态-3)
+    - [使用权限](#使用权限-3)
+    - [Request](#request-3)
+    - [Response](#response-3)
 
 ## randomGetter
 
@@ -143,4 +148,35 @@ wx.cloud.callFunction({
         "value": [[x1, x2, ...], ...,[...]] // 一个二维数组，二维数组中的每个数组都表示一个可行的拆字方案
     }
 ]
+```
+
+## getDecryptedData
+
+### 状态
+
+- 已部署
+
+### 使用权限
+
+- 仅创建者可读写
+
+### Request
+```javascript
+wx.cloud.callFunction({
+    name: "validate",
+    data: {
+        decryptedData: wx.cloud.CloudID("xxx") // xxx 为需要解密的 CloudID
+    }
+})
+```
+
+### Response
+```javascript
+{
+    event: {
+        decryptedData: { ... }
+    },
+    userInfo: { ... },
+    openID: { ... }
+}
 ```
