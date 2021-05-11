@@ -116,6 +116,10 @@ export default class Player extends Sprite {
       var ans = Block.judgeBlocks(this.collide_blocks).then(res => {
         console.log(res);
         if (res.length){
+          for (var i = 0; i < res.length; ++i) {
+            databus.learned_chars.add(res[i]['_id']);
+          }
+          console.log(databus.learned_chars)
           databus.removeUnmoveBlock();
           databus.score+=5;
           databus.gameOver=true;

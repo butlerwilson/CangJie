@@ -18,6 +18,8 @@ export default class DataBus {
     instance = this
 
     this.pool = new Pool()
+    // stop 时候上传
+    this.learned_chars = new Set()
 
     this.reset()
   }

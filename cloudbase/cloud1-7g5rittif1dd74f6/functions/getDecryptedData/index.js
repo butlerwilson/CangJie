@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
     db.collection("user_info").add({
       data: {
         _id: wxContext.OPENID,
+        userInfo: event.decryptedData.data,
         chars: []
       }
     })
